@@ -1,7 +1,8 @@
 Splendid Animator
 ===
+Non-copyleft licenced under: 
+[MIT License (MIT)](http://opensource.org/licenses/mit-license.html)
 
-Licensed under the MIT license.
-
+Design
+---
 This program is intended to be a simple 2D animator with some really powerful capabilities.
-
