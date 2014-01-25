@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main extends JFrame
 {
@@ -42,6 +43,7 @@ public class Main extends JFrame
 
 	public static void main(String[] args)
 	{
+		/*
 		try
 		{
 			for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
@@ -63,6 +65,7 @@ public class Main extends JFrame
 			{
 			}
 		}
+		*/
 
 		SwingUtilities.invokeLater(new Runnable()
 		{
