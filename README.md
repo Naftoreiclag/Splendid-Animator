@@ -1,4 +1,7 @@
-Splendid-Animator
-=================
+Splendid Animator
+===
 
-My splendid animator program
+Licensed under the MIT license.
+
+This program is intended to be a simple 2D animator with some really powerful capabilities.
+
