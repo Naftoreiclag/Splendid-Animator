@@ -2,6 +2,7 @@ Splendid Animator
 ===
 Non-copyleft licenced under: 
 [MIT License (MIT)](http://opensource.org/licenses/mit-license.html)
+[LWJGL License](http://lwjgl.org/license.php)
 
 Design
 ---
