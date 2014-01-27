@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 public class Application
 {
-	float x = 400, y = 300;
+	float x = 0, y = 0;
 	float rotation = 0;
 	
 	long lastFrame;
@@ -36,11 +36,12 @@ public class Application
 			System.exit(0);
 		}
 
-		initGL(); // init OpenGL
-		getDelta(); // call once before loop to initialise lastFrame
-		lastFPS = getTime(); // call before loop to initialise fps timer
+		initGL();
+		getDelta();
+		lastFPS = getTime();
 
 		Display.setResizable(true);
+
 
 		while (!Display.isCloseRequested())
 		{
@@ -52,10 +53,14 @@ public class Application
 			renderGL();
 
 			Display.update();
+			Display.sync(60);
 			
 		}
-
-		Display.destroy();
+		
+		if (Display.isCloseRequested())
+		{
+			Display.destroy();
+		}
 	}
 	
 	public void update(int delta)
@@ -65,8 +70,8 @@ public class Application
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
 		
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y += 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y -= 0.35f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y -= 0.35f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y += 0.35f * delta;
 		
 		if (x < 0) x = 0;
 		if (x > 800) x = 800;
@@ -103,24 +108,33 @@ public class Application
 
 	public void initGL()
 	{
+		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		GL11.glLoadIdentity();
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 800, 0, 600, 1, -1);
+		GL11.glOrtho(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, 1.0f, -1.0f);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
 	}
 
 	public void renderGL()
 	{
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		if (Display.wasResized())
+		{
+			initGL();
+		}
+
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
 		GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
 		GL11.glPushMatrix();
 		
-		GL11.glTranslatef(x, y, 0);
+		//GL11.glTranslatef(x, y, 0);
 		
-		GL11.glRotatef(rotation, 0f, 0f, 1f);
+		//GL11.glRotatef(rotation, 0f, 0f, 1f);
 		
-		GL11.glTranslatef(-x, -y, 0);
+		//GL11.glTranslatef(-x, -y, 0);
 
 		GL11.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(x - 50, y - 50);
@@ -145,6 +159,17 @@ public class Application
 
 	public static void main(String[] args)
 	{
+		/*
+		(new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+            	Application application = new Application();
+        		application.run();
+            }
+        })).start();*/
+		
 		Application application = new Application();
 		application.run();
 	}
