@@ -122,6 +122,9 @@ public class Application
 		if (Display.wasResized())
 		{
 			initGL();
+			
+			System.out.println("window was resized");
+			
 		}
 
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
