@@ -37,11 +37,11 @@ public class Application
 		}
 
 		initGL();
+		
 		getDelta();
 		lastFPS = getTime();
 
 		Display.setResizable(true);
-
 
 		while (!Display.isCloseRequested())
 		{
@@ -49,8 +49,6 @@ public class Application
 			int delta = getDelta();
 			
 			update(delta);
-			
-			renderGL();
 
 			Display.update();
 			Display.sync(60);
@@ -115,38 +113,6 @@ public class Application
 		GL11.glOrtho(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, 1.0f, -1.0f);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
-	}
-
-	public void renderGL()
-	{
-		if (Display.wasResized())
-		{
-			initGL();
-			
-			System.out.println("window was resized");
-			
-		}
-
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-		GL11.glColor3f(0.5f, 0.5f, 1.0f);
-
-		GL11.glPushMatrix();
-		
-		//GL11.glTranslatef(x, y, 0);
-		
-		//GL11.glRotatef(rotation, 0f, 0f, 1f);
-		
-		//GL11.glTranslatef(-x, -y, 0);
-
-		GL11.glBegin(GL11.GL_QUADS);
-			GL11.glVertex2f(x - 50, y - 50);
-			GL11.glVertex2f(x + 50, y - 50);
-			GL11.glVertex2f(x + 50, y + 50);
-			GL11.glVertex2f(x - 50, y + 50);
-		GL11.glEnd();
-		
-		GL11.glPopMatrix();
 	}
 
 	public void input()
