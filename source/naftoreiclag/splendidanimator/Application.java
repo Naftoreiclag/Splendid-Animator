@@ -6,12 +6,19 @@
 
 package naftoreiclag.splendidanimator;
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.ARBVertexBufferObject.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Application
 {
@@ -22,44 +29,53 @@ public class Application
 	int fps;
 	long lastFPS;
 	
+
 	public void run()
 	{
-		try
-		{
-			Display.setDisplayMode(new DisplayMode(800, 600));
-			Display.create();
-		}
-		catch (Exception e)
-		{
-			System.err.println("Could not create display!");
-			e.printStackTrace();
-			System.exit(0);
-		}
-
-		initGL();
+		DrawThingy dt = new DrawThingy(800, 600);
 		
 		getDelta();
 		lastFPS = getTime();
-
-		Display.setResizable(true);
 
 		while (!Display.isCloseRequested())
 		{
 			input();
 			int delta = getDelta();
-			
-			update(delta);
 
-			Display.update();
-			Display.sync(60);
-			
+			update(delta);
+			dt.egg();
+			renderGL();
 		}
 		
-		if (Display.isCloseRequested())
+		if(Display.isCloseRequested())
 		{
-			Display.destroy();
+			dt.cleanup();
 		}
 	}
+	
+	public void renderGL()
+    {
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+            GL11.glColor3f(0.5f, 0.5f, 1.0f);
+
+            GL11.glPushMatrix();
+            
+            //GL11.glTranslatef(x, y, 0);
+            
+            //GL11.glRotatef(rotation, 0f, 0f, 1f);
+            
+            //GL11.glTranslatef(-x, -y, 0);
+
+            GL11.glBegin(GL11.GL_QUADS);
+                    GL11.glVertex2f(x - 50, y - 50);
+                    GL11.glVertex2f(x + 50, y - 50);
+                    GL11.glVertex2f(x + 50, y + 50);
+                    GL11.glVertex2f(x - 50, y + 50);
+            GL11.glEnd();
+            
+            GL11.glPopMatrix();
+    }
 	
 	public void update(int delta)
 	{
@@ -106,13 +122,13 @@ public class Application
 
 	public void initGL()
 	{
-		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		GL11.glLoadIdentity();
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, 1.0f, -1.0f);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
+		glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		glLoadIdentity();
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		//glOrtho(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, 1.0f, -1.0f);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 	}
 
 	public void input()
