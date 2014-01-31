@@ -7,18 +7,18 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class EasyOpenGL
 {
-	long lastFrame;
-	int fps;
-	long lastFPS;
-	
+	// Display size
 	private int dispW;
 	private int dispH;
 	
+	// Constructor
 	public EasyOpenGL(int dispW, int dispH)
 	{
+		// Set display size
 		this.dispW = dispW;
 		this.dispH = dispH;
 		
+		// Try make the display
 		try
 		{
 			Display.setDisplayMode(new DisplayMode(800, 600));
@@ -28,25 +28,28 @@ public class EasyOpenGL
 		{
 			System.err.println("Could not create display!");
 			e.printStackTrace();
-			System.exit(0);
 		}
 		
+		// Display settings
 		Display.setResizable(true);
 		
-		updateDumbSyncStuff();
+		// Set up OpenGL view port
+		syncViewportAndDisplaySizes();
 	}
 	
-	public void resize(int dispW, int dispH)
+	// resize the display
+	public void resizeDisplay(int dispW, int dispH)
 	{
 		this.dispW = dispW;
 		this.dispH = dispH;
 	}
 
-	public void egg()
+	// Send the stuff to GPU
+	public void sendStuffToGPU()
 	{
 		if(Display.wasResized())
 		{
-			updateDumbSyncStuff();
+			syncViewportAndDisplaySizes();
 			System.out.println("window was resized");
 		}
 
@@ -54,7 +57,8 @@ public class EasyOpenGL
 		Display.sync(60);
 	}
 	
-	private void updateDumbSyncStuff()
+	// Sync stuff
+	private void syncViewportAndDisplaySizes()
 	{
 		glViewport(0, 0, dispW, dispH);
 		glLoadIdentity();
@@ -65,8 +69,10 @@ public class EasyOpenGL
 		glLoadIdentity();
 	}
 	
+	// Cleanup
 	public void cleanup()
 	{
+		// Delete the display
 		Display.destroy();
 	}
 }
