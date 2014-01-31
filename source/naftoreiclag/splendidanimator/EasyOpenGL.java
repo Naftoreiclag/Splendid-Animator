@@ -25,7 +25,7 @@ public class EasyOpenGL
 	protected static void initialize(int dispW, int dispH) throws LWJGLException
 	{
 		// Make display
-		Display.setDisplayMode(new DisplayMode(800, 600));
+		Display.setDisplayMode(new DisplayMode(dispW, dispH));
 		Display.setResizable(true);
 		Display.create();
 		
