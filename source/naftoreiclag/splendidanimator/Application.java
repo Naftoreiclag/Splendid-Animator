@@ -31,13 +31,10 @@ public class Application
 
 		while (!Display.isCloseRequested())
 		{
-			EasyOpenGL.sendStuffToGPU();
+			EasyOpenGL.updateDisplay();
 			input();
 			update(20);
 			renderGL();
-			
-			Display.update();
-			Display.sync(60);
 		}
 		
 		if(Display.isCloseRequested())
@@ -48,8 +45,6 @@ public class Application
 	
 	public void renderGL()
     {
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
             GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
             GL11.glPushMatrix();
@@ -60,21 +55,7 @@ public class Application
                     GL11.glVertex2f(x + 50, y + 50);
                     GL11.glVertex2f(x - 50, y + 50);
             GL11.glEnd();
-            
-            GL11.glPopMatrix();
 
-            GL11.glColor3f(0.5f, 1.0f, 0.5f);
-            
-            GL11.glPushMatrix();
-
-            GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(0, 0);
-                    GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), 0);
-                    GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), EasyOpenGL.getDisplayHeight());
-                    GL11.glVertex2f(0, EasyOpenGL.getDisplayHeight());
-            GL11.glEnd();
-            
-            GL11.glPopMatrix();
             
     }
 	
