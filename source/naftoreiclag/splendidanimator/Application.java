@@ -24,26 +24,17 @@ public class Application
 {
 	float x = 0, y = 0;
 	float rotation = 0;
-	
-	long lastFrame;
-	int fps;
-	long lastFPS;
-	
 
 	public void run()
 	{
 		EasyOpenGL dt = new EasyOpenGL(800, 600);
 		
-		getDelta();
-		lastFPS = getTime();
 
 		while (!Display.isCloseRequested())
 		{
 			input();
-			int delta = getDelta();
-
-			update(delta);
-			dt.egg();
+			update(1);
+			dt.sendStuffToGPU();
 			renderGL();
 		}
 		
@@ -85,46 +76,8 @@ public class Application
 		if (x > 800) x = 800;
 		if (y < 0) y = 0;
 		if (y > 600) y = 600;
-		
-		updateFPS();
 	}
 	
-	public int getDelta()
-	{
-		long time = getTime();
-		int delta = (int) (time - lastFrame);
-		lastFrame = time;
-
-		return delta;
-	}
-
-	public long getTime()
-	{
-		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-
-	public void updateFPS()
-	{
-		if (getTime() - lastFPS > 1000)
-		{
-			Display.setTitle("FPS: " + fps);
-			fps = 0;
-			lastFPS += 1000;
-		}
-		fps ++;
-	}
-
-	public void initGL()
-	{
-		glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		glLoadIdentity();
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		//glOrtho(0.0f, Display.getWidth(), Display.getHeight(), 0.0f, 1.0f, -1.0f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-	}
-
 	public void input()
 	{
 		if (Mouse.isButtonDown(0))
@@ -138,17 +91,6 @@ public class Application
 
 	public static void main(String[] args)
 	{
-		/*
-		(new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-            	Application application = new Application();
-        		application.run();
-            }
-        })).start();*/
-		
 		Application application = new Application();
 		application.run();
 	}
