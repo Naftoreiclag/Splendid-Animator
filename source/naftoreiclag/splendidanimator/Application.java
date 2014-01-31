@@ -6,19 +6,11 @@
 
 package naftoreiclag.splendidanimator;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.Sys;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.ARBVertexBufferObject.*;
-import static org.lwjgl.opengl.GL11.*;
 
 public class Application
 {
@@ -27,20 +19,30 @@ public class Application
 
 	public void run()
 	{
-		EasyOpenGL dt = new EasyOpenGL(800, 600);
+		try
+		{
+			EasyOpenGL.initialize(800, 600);
+		} catch (LWJGLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 
 		while (!Display.isCloseRequested())
 		{
+			EasyOpenGL.sendStuffToGPU();
 			input();
-			update(1);
-			dt.sendStuffToGPU();
+			update(20);
 			renderGL();
+			
+			Display.update();
+			Display.sync(60);
 		}
 		
 		if(Display.isCloseRequested())
 		{
-			dt.cleanup();
+			EasyOpenGL.cleanup();
 		}
 	}
 	
@@ -60,6 +62,20 @@ public class Application
             GL11.glEnd();
             
             GL11.glPopMatrix();
+
+            GL11.glColor3f(0.5f, 1.0f, 0.5f);
+            
+            GL11.glPushMatrix();
+
+            GL11.glBegin(GL11.GL_QUADS);
+                    GL11.glVertex2f(0, 0);
+                    GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), 0);
+                    GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), EasyOpenGL.getDisplayHeight());
+                    GL11.glVertex2f(0, EasyOpenGL.getDisplayHeight());
+            GL11.glEnd();
+            
+            GL11.glPopMatrix();
+            
     }
 	
 	public void update(int delta)
