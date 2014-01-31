@@ -5,12 +5,16 @@ import org.lwjgl.opengl.DisplayMode;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class DrawThingy
+public class EasyOpenGL
 {
+	long lastFrame;
+	int fps;
+	long lastFPS;
+	
 	private int dispW;
 	private int dispH;
 	
-	public DrawThingy(int dispW, int dispH)
+	public EasyOpenGL(int dispW, int dispH)
 	{
 		this.dispW = dispW;
 		this.dispH = dispH;
