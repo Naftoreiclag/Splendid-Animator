@@ -16,13 +16,10 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class EasyOpenGL
+public abstract class EasyGraphics
 {
-	// Shapes
-	private static List<RenderThingy> shapes = new LinkedList();
-	
 	// Initializer
-	protected static void initialize(int dispW, int dispH) throws LWJGLException
+	protected void initialize(int dispW, int dispH) throws LWJGLException
 	{
 		// Make display
 		Display.setDisplayMode(new DisplayMode(dispW, dispH));
@@ -34,7 +31,7 @@ public class EasyOpenGL
 	}
 	
 	// Send the stuff to GPU and put on display
-	protected static void updateDisplay()
+	protected void updateDisplay()
 	{
 		// If the view port is resized
 		if (Display.wasResized())
@@ -57,67 +54,41 @@ public class EasyOpenGL
 	}
 	
 	//
-	private static void clearGPU()
+	private void clearGPU()
 	{
-        	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+    	GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	}
 
 	//
-	private static void sendStuffToGPU()
-	{
-		GL11.glColor3f(0.5f, 1.0f, 0.5f);
-		
-		GL11.glPushMatrix();
-		
-			GL11.glBegin(GL11.GL_QUADS);
-				GL11.glVertex2f(0, 0);
-				GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), 0);
-				GL11.glVertex2f(EasyOpenGL.getDisplayWidth(), EasyOpenGL.getDisplayHeight());
-				GL11.glVertex2f(0, EasyOpenGL.getDisplayHeight());
-			GL11.glEnd();
-		
-		GL11.glPopMatrix();
-	}
-	
-	//
-	public static void registerShape(RenderThingy shape)
-	{
-		shapes.add(shape);
-	}
-	
-	//
-	public static void unregisterShape(RenderThingy shape)
-	{
-		shapes.remove(shape);
-	}
+	abstract void sendStuffToGPU();
 
 	// Cleanup
-	protected static void cleanup()
+	protected void cleanup()
 	{
 		// Delete the display
 		Display.destroy();
 	}
 
 	// Resize the display
-	public static void resizeDisplay(int dispW, int dispH) throws LWJGLException
+	public void resizeDisplay(int dispW, int dispH) throws LWJGLException
 	{
 		Display.setDisplayMode(new DisplayMode(dispW, dispH));
 	}
 	
 	//
-	public static int getDisplayWidth()
+	public int getDisplayWidth()
 	{
 		return Display.getWidth();
 	}
 	
 	//
-	public static int getDisplayHeight()
+	public int getDisplayHeight()
 	{
 		return Display.getHeight();
 	}
 
 	// Sync stuff
-	private static void syncViewportAndDisplaySizes()
+	private void syncViewportAndDisplaySizes()
 	{
 		// Get the target size
 		final int dispW = Display.getWidth();

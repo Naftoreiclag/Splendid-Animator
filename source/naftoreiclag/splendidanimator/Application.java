@@ -6,6 +6,8 @@
 
 package naftoreiclag.splendidanimator;
 
+import naftoreiclag.splendidanimator.slide.GuiNode;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -14,14 +16,21 @@ import org.lwjgl.opengl.GL11;
 
 public class Application
 {
-	float x = 0, y = 0;
-	float rotation = 0;
-
 	public void run()
 	{
+		EasyGraphics graphics = new EasyGraphics()
+		{
+			GuiNode baseNode;
+			
+			@Override
+			void sendStuffToGPU()
+			{
+			}
+		};
+		
 		try
 		{
-			EasyOpenGL.initialize(800, 600);
+			graphics.initialize(800, 600);
 		} catch (LWJGLException e)
 		{
 			// TODO Auto-generated catch block
@@ -31,15 +40,13 @@ public class Application
 
 		while (!Display.isCloseRequested())
 		{
-			EasyOpenGL.updateDisplay();
-			input();
-			update(20);
+			graphics.updateDisplay();
 			renderGL();
 		}
 		
 		if(Display.isCloseRequested())
 		{
-			EasyOpenGL.cleanup();
+			graphics.cleanup();
 		}
 	}
 	
@@ -50,41 +57,14 @@ public class Application
             GL11.glPushMatrix();
 
             GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(x - 50, y - 50);
-                    GL11.glVertex2f(x + 50, y - 50);
-                    GL11.glVertex2f(x + 50, y + 50);
-                    GL11.glVertex2f(x - 50, y + 50);
+                    GL11.glVertex2f(100 - 50, 100 - 50);
+                    GL11.glVertex2f(100 + 50, 100 - 50);
+                    GL11.glVertex2f(100 + 50, 100 + 50);
+                    GL11.glVertex2f(100 - 50, 100 + 50);
             GL11.glEnd();
 
             
     }
-	
-	public void update(int delta)
-	{
-		rotation += 0.15f * delta;
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) x += 0.35f * delta;
-		
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) y -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) y += 0.35f * delta;
-		
-		if (x < 0) x = 0;
-		if (x > 800) x = 800;
-		if (y < 0) y = 0;
-		if (y > 600) y = 600;
-	}
-	
-	public void input()
-	{
-		if (Mouse.isButtonDown(0))
-		{
-			int x = Mouse.getX();
-			int y = Mouse.getY();
-
-			System.out.println("mouse down x: " + x + " y: " + y);
-		}
-	}
 
 	public static void main(String[] args)
 	{
